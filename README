@@ -1,0 +1,17 @@
+Welcome to Game Theory.
+
+It's a pretty simple idea... at least that's how it's going to start off!
+
+For a basic understanding of Game Theory have a look at the following Wiki page:
+
+  https://en.wikipedia.org/wiki/Game_theory
+
+What I'll actually be trying to implement is my own version of The El Farol Bar problem; take a look:
+
+  https://en.wikipedia.org/wiki/El_Farol_Bar_problem
+
+The basic idea is that there's an odd number of players who will decide whether or not to go to a bar on a given night. 
+
+As there's an odd number of players this means that there will always be more people who decide to go to the bar than not go to the bar, or vise-versa.
+
+The game is simple - be in the minority.
