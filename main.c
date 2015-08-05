@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "player.h"
-
+#include "logger.h"
 
 #define NUMBER_OF_PLAYERS     3
 #define HISTORY_DEPTH         2
@@ -26,30 +26,23 @@ int main(int argc, char ** argv){
          HISTORY_DEPTH,
          STRATEGIES);
   
-
+  // Setup the players and their strategies.
+  player_setup(&players[0], 0, 12);
+  player_setup(&players[1], 0, 0);
+  player_setup(&players[2], 0, 15);
+ 
+  printf("history [%s]\n", get_bits(&history, sizeof(history)));
+  play_round(players, NUMBER_OF_PLAYERS, &history);
+  printf("history [%s]\n", get_bits(&history, sizeof(history)));
+  play_round(players, NUMBER_OF_PLAYERS, &history);
+  printf("history [%s]\n", get_bits(&history, sizeof(history)));
+  play_round(players, NUMBER_OF_PLAYERS, &history);
+  printf("history [%s]\n", get_bits(&history, sizeof(history)));
+  play_round(players, NUMBER_OF_PLAYERS, &history);
+  printf("history [%s]\n", get_bits(&history, sizeof(history)));
+  play_round(players, NUMBER_OF_PLAYERS, &history);
+  printf("history [%s]\n", get_bits(&history, sizeof(history)));
   
-  players[0].player_id = 0;
-  players[1].player_id = 1;
-  players[2].player_id = 2;
-
-  players[0].player_strategy = 3;   // 0011
-  players[1].player_strategy = 12;  // 1100
-  players[3].player_strategy = 7;   // 1001
-
-  players[0].player_decision = 1;
-  players[1].player_decision = 0;
-  players[2].player_decision = 1;
-
-  get_player_decision(players[0], 1);
-  
-  int i;
-  for (i = 0; i < NUMBER_OF_PLAYERS; i++)
-  {
-    get_player_decision(players[i], 2);
-  }
-  
-  get_round_result(players, NUMBER_OF_PLAYERS);
-
-
+  printf("History is now %i\n", history);
   return 0;
 }
