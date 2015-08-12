@@ -53,7 +53,7 @@ void player_setup(player_t* player, const int id, const int strategy)
  */
 void set_player_decision(player_t* player, const int history)
 {
-  dbg_printf("Player strategy: %i", player.player_strategy);
+  dbg_printf("Player strategy: %i", player->player_strategy);
   dbg_printf("History: %i", history);
 
   if(check_bit(player->player_strategy, history))
