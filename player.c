@@ -19,6 +19,7 @@ void play_round(player_t* players, const int number_of_players, uint8_t *history
     for (i = 0; i < number_of_players; i++)
     {
       set_player_decision(&players[i], *history);
+      update_history(players[i].player_history, num_elements, players[i].player_decision);
     }
   }
 
@@ -34,13 +35,14 @@ void play_round(player_t* players, const int number_of_players, uint8_t *history
  * @brief - Simple helper function to help setup players. 
  *          By default the player's decision will be set to 0.
  */
-void player_setup(player_t* player, const int id, const int strategy)
+void player_setup(player_t* player, const int id, const int strategy, const int history_size)
 {
   if(player)
   {
     player->player_id       = id;
     player->player_strategy = strategy;
     player->player_decision = 0;
+    player->player_history  = calloc(1, history_size);
   }
   else
   {

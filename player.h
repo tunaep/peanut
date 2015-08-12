@@ -11,6 +11,7 @@ typedef struct {
   int player_id;
   int player_strategy;
   int player_decision;
+  uint8_t* player_history;
 }player_t;
 
 /*
@@ -35,7 +36,7 @@ void play_round(player_t* players, const int number_of_players, uint8_t* history
  *
  * @param startegy  - The starting strategy we'll give the player.
  */
-void player_setup(player_t* player, const int id, const int strategy);
+void player_setup(player_t* player, const int id, const int strategy, const int history_size);
 
 /*
  * @brief - Check if a bit is set on a given number

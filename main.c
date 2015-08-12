@@ -15,6 +15,9 @@ player_t players[NUMBER_OF_PLAYERS];
 const int number_of_rounds = 10;
 
 int main(int argc, char ** argv){
+  int history_size = (int)(number_of_rounds / 8) + 1;
+  printf("History size: %i\n", history_size);
+  uint8_t* history = calloc(1, history_size);
   
   printf("Game Settings: \n"
          "\tNumber of Plyers: %i\n"
@@ -25,21 +28,23 @@ int main(int argc, char ** argv){
          STRATEGIES);
   
   // Setup the players and their strategies.
-  player_setup(&players[0], 0, 12);
-  player_setup(&players[1], 0, 0);
-  player_setup(&players[2], 0, 15);
+  player_setup(&players[0], 0, 12, history_size);
+  player_setup(&players[1], 0, 0,  history_size);
+  player_setup(&players[2], 0, 15, history_size);
 
   int i;
-  int history_size = (int)(number_of_rounds / 8) + 1;
-  printf("History size: %i\n", history_size);
-  uint8_t history[2] = {0};
   for (i = 0; i < number_of_rounds; i++)
   {
     play_round(players, NUMBER_OF_PLAYERS, history, history_size);
-    printf("%s\n", get_bits(&history, sizeof(history)));
+    printf("%s\n", get_bits(history, history_size));
   }
  
- 
+  printf("Player %i history %s\n", players[0].player_id,
+     get_bits(players[0].player_history, history_size)); 
+  printf("Player %i history %s\n", players[1].player_id,
+     get_bits(players[1].player_history, history_size)); 
+  printf("Player %i history %s\n", players[2].player_id,
+     get_bits(players[2].player_history, history_size)); 
 
 
 
