@@ -2,27 +2,15 @@
 #include <math.h>
 #include "player.h"
 #include "logger.h"
+#include <stdint.h>
 
-/*
- * @brief - Helper function to help us update the history
- */
-void update_history(int* history, const int new_value)
-{
-  int old_history = *history;
-  *history <<= 1;
-  if(1 == new_value)
-  {
-    (*history)++;
-  }
-  dbg_printf("Updated history from %i to %i", old_history, *history);
-}
-
+int logging = 0;
 
 /*
  * @brief - Play a round. This will take the players and their attributes, 
  *          and the current history, and get the players decisions.
  */
-void play_round(player_t* players, const int number_of_players, int *history)
+void play_round(player_t* players, const int number_of_players, uint8_t *history, const int num_elements)
 {
   // First set the players decision based on a given history
   if (players)
@@ -36,10 +24,10 @@ void play_round(player_t* players, const int number_of_players, int *history)
 
   // Then get the tally of the decisions
   int round_result = get_round_result(players, number_of_players);
-  dbg_printf("The round result was %i\n", round_result);
+  //dbg_printf("The round result was %i\n", round_result);
 
   // Finally, update the current history with our result.
-  update_history(history, round_result);
+  update_history(history, num_elements, round_result);
 }
 
 /*
@@ -65,8 +53,8 @@ void player_setup(player_t* player, const int id, const int strategy)
  */
 void set_player_decision(player_t* player, const int history)
 {
-//  dbg_printf("Player strategy: %i", player.player_strategy);
-//  dbg_printf("History: %i", history);
+  dbg_printf("Player strategy: %i", player.player_strategy);
+  dbg_printf("History: %i", history);
 
   if(check_bit(player->player_strategy, history))
   {
@@ -122,7 +110,7 @@ int check_bit(const int number, const int bit)
  */
 char* get_bits(void const * const ptr, size_t const size)
 {
-  int bits = (size*8) ;
+  int bits = (size*8);
   char* buffer = calloc(1, bits + 1);
   char* write_ptr = buffer;
   
@@ -143,3 +131,14 @@ char* get_bits(void const * const ptr, size_t const size)
   return buffer;
 }
 
+void update_history(uint8_t* history, const int num_elements, const int new_value)
+{
+  int x;
+  for (x = num_elements - 1; x > 0; x--)
+  {
+    history[x] <<= 1;
+    history[x-1] & (1<<7) ? history[x]++ : 0;
+  }
+  history[0] <<= 1;
+  history[0] += new_value;
+}

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdint.h>
 #include "player.h"
 #include "logger.h"
 
@@ -11,10 +12,7 @@
 
 player_t players[NUMBER_OF_PLAYERS];
 
-int history = 0;
-const int number_of_rounds = 100;
-
-
+const int number_of_rounds = 10;
 
 int main(int argc, char ** argv){
   
@@ -30,19 +28,70 @@ int main(int argc, char ** argv){
   player_setup(&players[0], 0, 12);
   player_setup(&players[1], 0, 0);
   player_setup(&players[2], 0, 15);
+
+  int i;
+  int history_size = (int)(number_of_rounds / 8) + 1;
+  printf("History size: %i\n", history_size);
+  uint8_t history[2] = {0};
+  for (i = 0; i < number_of_rounds; i++)
+  {
+    play_round(players, NUMBER_OF_PLAYERS, history, history_size);
+    printf("%s\n", get_bits(&history, sizeof(history)));
+  }
  
-  printf("history [%s]\n", get_bits(&history, sizeof(history)));
-  play_round(players, NUMBER_OF_PLAYERS, &history);
-  printf("history [%s]\n", get_bits(&history, sizeof(history)));
-  play_round(players, NUMBER_OF_PLAYERS, &history);
-  printf("history [%s]\n", get_bits(&history, sizeof(history)));
-  play_round(players, NUMBER_OF_PLAYERS, &history);
-  printf("history [%s]\n", get_bits(&history, sizeof(history)));
-  play_round(players, NUMBER_OF_PLAYERS, &history);
-  printf("history [%s]\n", get_bits(&history, sizeof(history)));
-  play_round(players, NUMBER_OF_PLAYERS, &history);
-  printf("history [%s]\n", get_bits(&history, sizeof(history)));
+ 
+
+
+
+#if 0 
+  uint8_t number[3] = {0};
+  number[0] = 0;
+  int x;
+
+
+  printf("%s%s%s\n", get_bits(&number[2], sizeof(uint8_t)),
+    get_bits(&number[1], sizeof(uint8_t)),
+    get_bits(&number[0], sizeof(uint8_t)));
+  new_history(&number, 3, 1);
+  printf("%s%s%s\n", get_bits(&number[2], sizeof(uint8_t)),
+    get_bits(&number[1], sizeof(uint8_t)),
+    get_bits(&number[0], sizeof(uint8_t)));
+  new_history(&number, 3, 1);
+  printf("%s%s%s\n", get_bits(&number[2], sizeof(uint8_t)),
+    get_bits(&number[1], sizeof(uint8_t)),
+    get_bits(&number[0], sizeof(uint8_t)));
+  new_history(&number, 3, 1);
+  printf("%s%s%s\n", get_bits(&number[2], sizeof(uint8_t)),
+    get_bits(&number[1], sizeof(uint8_t)),
+    get_bits(&number[0], sizeof(uint8_t)));
+  new_history(&number, 3, 1);
+  printf("%s%s%s\n", get_bits(&number[2], sizeof(uint8_t)),
+    get_bits(&number[1], sizeof(uint8_t)),
+    get_bits(&number[0], sizeof(uint8_t)));
+  uint8_t number[3] = {0};
+  number[0] = 129;
+  int x;
+  for (x = sizeof(number)/sizeof(number[0]) - 1; x > 0; x--)
+  {
+    number[x] <<= 1;
+    number[x-1] & (1<<7) ? number[x]++ : 0;
+  }
+  number[0] <<= 1;
+
+  printf("%s%s%s\n", get_bits(&number[2], sizeof(uint8_t)),
+    get_bits(&number[1], sizeof(uint8_t)),
+    get_bits(&number[0], sizeof(uint8_t)));
+  printf("%i %i %i\n", number[2], number[1], number[0]);
+  number[2] <<= 1;
+  if(number[1] & (1<<7)) number[2]++;
+  number[1] <<= 1;
+  if(number[0] & (1<<7)) number[1]++;
+  number[0] <<= 1;
   
-  printf("History is now %i\n", history);
+  printf("%s%s%s\n", get_bits(&number[2], sizeof(uint8_t)),
+    get_bits(&number[1], sizeof(uint8_t)),
+    get_bits(&number[0], sizeof(uint8_t)));
+  printf("%i %i %i\n", number[2], number[1], number[0]);
+#endif
   return 0;
 }

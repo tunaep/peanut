@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <stdlib.h>
 
 /* 
@@ -21,7 +22,7 @@ typedef struct {
  * 
  * @param history - The current history - this will be updated.
  */
-void play_round(player_t* players, const int number_of_players, int* history);
+void play_round(player_t* players, const int number_of_players, uint8_t* history, const int num_elements);
 
 
 /*
@@ -77,7 +78,7 @@ int get_round_result(player_t* players, const int number_of_players);
  *
  * @param new_value - Value we'll add on to the end of the number.
  */
-void update_history(int* history, const int new_value);
+void update_history(uint8_t* history, const int num_elements, const int new_value);
 
 /*
  * @brief - A function to return the bit representation of data.
@@ -91,16 +92,5 @@ void update_history(int* history, const int new_value);
  * @example - get_bits(int i = 4, sizeof(int));
  */
 char* get_bits(void const * const ptr, size_t const size);
-
-
-
-
-
-
-
-
-
-
-
 
 
